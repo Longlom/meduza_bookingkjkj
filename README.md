@@ -44,3 +44,12 @@ Open `http://localhost:3000/booking`.
    - `OPEN_TO=03:00`
 3. Deploy. The resulting Vercel URL is **the booking link** you share with customers.
 
+## Vercel Analytics & Speed Insights
+The app includes `@vercel/analytics` and `@vercel/speed-insights` in `app/layout.tsx`.
+
+After deploy, enable them in the Vercel dashboard:
+- Project → **Analytics** → Enable
+- Project → **Speed Insights** → Enable
+
+Data appears after production traffic (not on localhost).
+
