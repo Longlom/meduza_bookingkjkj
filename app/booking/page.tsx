@@ -146,7 +146,7 @@ export default function BookingPage() {
           <div>
             <div className="title">Meduza — Booking</div>
             <div className="subtitle">
-              Opening hours: {openingHoursHint({ openFrom: "12:00", openTo: "03:00" })}{" "}
+              Opening hours: {openingHoursHint({ openFrom: "12:00", openTo: "02:00" })}{" "}
               (Vietnam time)
             </div>
           </div>
@@ -255,7 +255,7 @@ export default function BookingPage() {
             <div className="field">
               <div className="labelRow">
                 <div className="label">Time</div>
-                <div className="hint">30 min steps (12:00–03:00)</div>
+                <div className="hint">30 min steps (12:00–02:00)</div>
               </div>
               <TimeDropdown
                 value={payload.time}
