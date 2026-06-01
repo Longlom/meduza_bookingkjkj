@@ -1,4 +1,4 @@
-import { minutesSinceMidnight } from "@/lib/time";
+import { minutesSinceMidnight, minutesToHHMM } from "@/lib/time";
 
 export type OpeningHoursConfig = {
   openFrom: string; // HH:MM
@@ -32,5 +32,30 @@ export function isTimeWithinOpeningHours(
 
 export function openingHoursHint(cfg: OpeningHoursConfig) {
   return `${cfg.openFrom}–${cfg.openTo}`;
+}
+
+/** All 30-min slots within opening hours only (e.g. 12:00…23:30, then 00:00…03:00). */
+export function buildOpeningTimeSlots(
+  cfg: OpeningHoursConfig,
+  stepMinutes = 30
+): string[] {
+  const from = minutesSinceMidnight(cfg.openFrom);
+  const to = minutesSinceMidnight(cfg.openTo);
+  const slots: string[] = [];
+
+  if (from <= to) {
+    for (let m = from; m <= to; m += stepMinutes) {
+      slots.push(minutesToHHMM(m));
+    }
+    return slots;
+  }
+
+  for (let m = from; m < 24 * 60; m += stepMinutes) {
+    slots.push(minutesToHHMM(m));
+  }
+  for (let m = 0; m <= to; m += stepMinutes) {
+    slots.push(minutesToHHMM(m));
+  }
+  return slots;
 }
 

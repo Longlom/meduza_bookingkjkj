@@ -4,6 +4,10 @@ import {
   isTimeWithinOpeningHours,
   openingHoursHint
 } from "@/lib/openingHours";
+import {
+  getResolvedCalendarDate,
+  isSlotBookable
+} from "@/lib/bookingSlots";
 import { sendTelegramMessage } from "@/lib/telegram";
 
 type ErrorBody = { error: string; openingHours?: string };
@@ -71,8 +75,21 @@ export async function POST(req: Request) {
     );
   }
 
+  if (!isSlotBookable(booking.date, booking.time, cfg)) {
+    return Response.json(
+      {
+        error:
+          "Please choose a time at least 1.5 hours from now (Vietnam time).",
+        openingHours: opening
+      } satisfies ErrorBody,
+      { status: 400 }
+    );
+  }
+
   // Minimal request id, returned to the client and included in Telegram.
   const requestId = globalThis.crypto.randomUUID().replaceAll("-", "").slice(0, 12);
+
+  const resolvedDate = getResolvedCalendarDate(booking.date, booking.time, cfg);
 
   const text = [
     "<b>Meduza booking</b>",
@@ -80,7 +97,7 @@ export async function POST(req: Request) {
     `<b>ID:</b> ${requestId}`,
     `<b>Name:</b> ${escapeHtml(booking.name)}`,
     `<b>Phone:</b> ${escapeHtml(booking.phone)}`,
-    `<b>Date:</b> ${escapeHtml(booking.date)}`,
+    `<b>Date:</b> ${escapeHtml(resolvedDate)}`,
     `<b>Time:</b> ${escapeHtml(booking.time)} (Vietnam)`,
     `<b>Guests:</b> ${booking.guests}`,
     booking.notes?.trim()

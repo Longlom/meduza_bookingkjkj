@@ -25,3 +25,15 @@ export function minutesSinceMidnight(hhmm: string) {
   return hour * 60 + minute;
 }
 
+export function minutesToHHMM(totalMinutes: number) {
+  const h = Math.floor(totalMinutes / 60);
+  const mi = totalMinutes % 60;
+  return `${pad2(h)}:${pad2(mi)}`;
+}
+
+export function addDaysToIsoDate(isoDate: string, days: number) {
+  const [y, mo, d] = isoDate.split("-").map(Number);
+  const dt = new Date(Date.UTC(y, mo - 1, d + days));
+  return `${dt.getUTCFullYear()}-${pad2(dt.getUTCMonth() + 1)}-${pad2(dt.getUTCDate())}`;
+}
+
