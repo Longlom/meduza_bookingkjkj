@@ -3,12 +3,15 @@ import { minutesSinceMidnight, minutesToHHMM } from "@/lib/time";
 export type OpeningHoursConfig = {
   openFrom: string; // HH:MM
   openTo: string; // HH:MM (may be next day)
+  /** Latest time customers can book (default 23:30). */
+  lastBookable: string;
 };
 
 export function getOpeningHoursFromEnv(): OpeningHoursConfig {
   return {
     openFrom: process.env.OPEN_FROM || "12:00",
-    openTo: process.env.OPEN_TO || "03:00"
+    openTo: process.env.OPEN_TO || "03:00",
+    lastBookable: process.env.BOOKING_LAST_TIME || "23:30"
   };
 }
 
@@ -30,30 +33,44 @@ export function isTimeWithinOpeningHours(
   return true;
 }
 
+/** Whether this time can be chosen on the booking form. */
+export function isTimeBookable(timeHHMM: string, cfg: OpeningHoursConfig) {
+  if (!isTimeWithinOpeningHours(timeHHMM, cfg)) return false;
+
+  const t = minutesSinceMidnight(timeHHMM);
+  const last = minutesSinceMidnight(cfg.lastBookable);
+  const from = minutesSinceMidnight(cfg.openFrom);
+  const to = minutesSinceMidnight(cfg.openTo);
+
+  if (from > to) {
+    return t >= from && t <= last;
+  }
+
+  return t >= from && t <= Math.min(to, last);
+}
+
 export function openingHoursHint(cfg: OpeningHoursConfig) {
   return `${cfg.openFrom}–${cfg.openTo}`;
 }
 
-/** All 30-min slots within opening hours only (e.g. 12:00…23:30, then 00:00…03:00). */
+/** Bookable 30-min slots (capped at lastBookable, e.g. 23:30). */
 export function buildOpeningTimeSlots(
   cfg: OpeningHoursConfig,
   stepMinutes = 30
 ): string[] {
   const from = minutesSinceMidnight(cfg.openFrom);
   const to = minutesSinceMidnight(cfg.openTo);
+  const last = minutesSinceMidnight(cfg.lastBookable);
   const slots: string[] = [];
 
   if (from <= to) {
-    for (let m = from; m <= to; m += stepMinutes) {
+    for (let m = from; m <= Math.min(to, last); m += stepMinutes) {
       slots.push(minutesToHHMM(m));
     }
     return slots;
   }
 
-  for (let m = from; m < 24 * 60; m += stepMinutes) {
-    slots.push(minutesToHHMM(m));
-  }
-  for (let m = 0; m <= to; m += stepMinutes) {
+  for (let m = from; m <= last && m < 24 * 60; m += stepMinutes) {
     slots.push(minutesToHHMM(m));
   }
   return slots;

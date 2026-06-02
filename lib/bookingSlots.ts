@@ -1,7 +1,4 @@
-import {
-  isTimeWithinOpeningHours,
-  type OpeningHoursConfig
-} from "@/lib/openingHours";
+import { isTimeBookable, type OpeningHoursConfig } from "@/lib/openingHours";
 import { addDaysToIsoDate, DEFAULT_TZ, minutesSinceMidnight } from "@/lib/time";
 
 /** Minimum time before booking: now + 1.5 hours */
@@ -98,7 +95,7 @@ export function isSlotBookable(
   timeZone = DEFAULT_TZ,
   advanceMs = MIN_BOOKING_ADVANCE_MS
 ): boolean {
-  if (!isTimeWithinOpeningHours(timeHHMM, cfg)) return false;
+  if (!isTimeBookable(timeHHMM, cfg)) return false;
   const slotMs = resolveBookingInstantUtcMs(
     serviceDate,
     timeHHMM,

@@ -1,7 +1,7 @@
 import { BookingSchema } from "@/lib/validation";
 import {
   getOpeningHoursFromEnv,
-  isTimeWithinOpeningHours,
+  isTimeBookable,
   openingHoursHint
 } from "@/lib/openingHours";
 import {
@@ -65,10 +65,10 @@ export async function POST(req: Request) {
 
   const booking = parsed.data;
 
-  if (!isTimeWithinOpeningHours(booking.time, cfg)) {
+  if (!isTimeBookable(booking.time, cfg)) {
     return Response.json(
       {
-        error: `We accept bookings only during opening hours (${opening}, Vietnam time).`,
+        error: `Bookings are available ${cfg.openFrom}–${cfg.lastBookable} (Vietnam time).`,
         openingHours: opening
       } satisfies ErrorBody,
       { status: 400 }
