@@ -1,7 +1,7 @@
 import CallStaffForm from "./CallStaffForm";
 import {
   getCallableStaff,
-  getStaffOnShiftFromEnv,
+  getStaffOnShift,
   parseTableParam
 } from "@/lib/staff";
 
@@ -12,7 +12,7 @@ type CallPageProps = {
 export default async function CallPage({ searchParams }: CallPageProps) {
   const params = await searchParams;
   const table = parseTableParam(params.table);
-  const staff = getStaffOnShiftFromEnv();
+  const staff = await getStaffOnShift();
   const callableStaff = getCallableStaff(staff);
 
   return <CallStaffForm table={table} callableStaff={callableStaff} />;

@@ -27,7 +27,11 @@ function StaffCard(props: {
   entry: CallableStaffEntry;
   table: string;
   disabled: boolean;
-  callLabel: string;
+  callPersonLabel: string;
+  callWaiterLabel: string;
+  callHookahLabel: string;
+  anyAvailableLabel: string;
+  genericHint: string;
   callingLabel: string;
   roleSingular: string;
   locale: string;
@@ -36,14 +40,18 @@ function StaffCard(props: {
   callFailed: string;
 }) {
   const { role, member } = props.entry;
+  const isGeneric = !!member.generic;
+  const displayName = isGeneric ? props.anyAvailableLabel : member.name;
   const [photoSrc, setPhotoSrc] = useState(() =>
-    getStaffPhotoSrc(member, role)
+    isGeneric
+      ? stubAvatarUrl(props.roleSingular, role)
+      : getStaffPhotoSrc(member, role)
   );
   const [submitting, setSubmitting] = useState(false);
 
   const onPhotoError = useCallback(() => {
-    setPhotoSrc(stubAvatarUrl(member.name, role));
-  }, [member.name, role]);
+    setPhotoSrc(stubAvatarUrl(isGeneric ? props.roleSingular : member.name, role));
+  }, [isGeneric, member.name, props.roleSingular, role]);
 
   async function onCall() {
     props.onError("");
@@ -76,19 +84,24 @@ function StaffCard(props: {
 
   const buttonLabel = submitting
     ? props.callingLabel
-    : formatMessage(props.callLabel, { name: member.name });
+    : isGeneric
+      ? role === "waiter"
+        ? props.callWaiterLabel
+        : props.callHookahLabel
+      : formatMessage(props.callPersonLabel, { name: member.name });
 
   return (
-    <article className="staffCard">
+    <article className={`staffCard${isGeneric ? " staffCard--generic" : ""}`}>
       <img
         className="staffPhoto"
         src={photoSrc}
-        alt={member.name}
+        alt={displayName}
         referrerPolicy="no-referrer"
         onError={onPhotoError}
       />
       <div className="staffRole">{props.roleSingular}</div>
-      <div className="staffName">{member.name}</div>
+      <div className="staffName">{displayName}</div>
+      {isGeneric ? <div className="staffHint">{props.genericHint}</div> : null}
       <button
         type="button"
         className="button staffCallButton"
@@ -107,7 +120,6 @@ export default function CallStaffForm({
 }: CallStaffFormProps) {
   const {
     locale,
-    messages: m,
     messages: { call: c, staff: s, common: common, errors: e }
   } = useLanguage();
   const [error, setError] = useState<string | null>(null);
@@ -142,23 +154,19 @@ export default function CallStaffForm({
     }));
   }
 
+  function successTitle(entry: CallableStaffEntry) {
+    if (entry.member.generic) {
+      return `${roleLabel(entry.role, s, false)} ${c.notified}`;
+    }
+    return `${entry.member.name} ${c.notified}`;
+  }
+
   if (!table) {
     return (
       <main className="page">
         <div className="card">
           <div className="title">{c.scanQrTitle}</div>
           <p className="subtitle">{c.scanQrDescription}</p>
-        </div>
-      </main>
-    );
-  }
-
-  if (callableStaff.length === 0) {
-    return (
-      <main className="page">
-        <div className="card">
-          <div className="title">{c.noStaffTitle}</div>
-          <p className="subtitle">{c.noStaffDescription}</p>
         </div>
       </main>
     );
@@ -180,7 +188,7 @@ export default function CallStaffForm({
         {success ? (
           <div className="success">
             <div className="title" style={{ fontSize: 16 }}>
-              {success.entry.member.name} {c.notified}
+              {successTitle(success.entry)}
             </div>
             <div className="subtitle">
               {c.successDetail} {common.reference}:{" "}
@@ -199,7 +207,11 @@ export default function CallStaffForm({
                   entry={entry}
                   table={table}
                   disabled={isOnCooldown(entry.member.id)}
-                  callLabel={c.callPerson}
+                  callPersonLabel={c.callPerson}
+                  callWaiterLabel={c.callWaiter}
+                  callHookahLabel={c.callHookah}
+                  anyAvailableLabel={c.anyAvailable}
+                  genericHint={c.genericHint}
                   callingLabel={c.calling}
                   roleSingular={roleLabel(role, s, false)}
                   locale={locale}

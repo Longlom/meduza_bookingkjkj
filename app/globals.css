@@ -362,6 +362,18 @@ select {
   color: #ffffff;
 }
 
+.staffHint {
+  font-size: 12px;
+  color: rgba(248, 250, 255, 0.72);
+  line-height: 1.35;
+  max-width: 220px;
+}
+
+.staffCard--generic {
+  border-color: rgba(42, 107, 255, 0.35);
+  background: rgba(42, 107, 255, 0.08);
+}
+
 .staffCallButton {
   width: 100%;
   margin-top: 4px;

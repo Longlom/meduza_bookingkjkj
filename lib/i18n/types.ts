@@ -49,6 +49,10 @@ export type Messages = {
     notified: string;
     successDetail: string;
     callPerson: string;
+    callWaiter: string;
+    callHookah: string;
+    anyAvailable: string;
+    genericHint: string;
     calling: string;
   };
   staff: {

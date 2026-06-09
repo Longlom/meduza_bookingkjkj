@@ -47,11 +47,15 @@ export const ru: Messages = {
     noStaffTitle: "Нет сотрудников на смене",
     noStaffDescription: "Обратитесь к администратору за помощью.",
     title: "Вызов персонала",
-    subtitle: "Выберите, кого позвать",
+    subtitle: "Позовите любого свободного сотрудника или выберите по имени",
     table: "Стол",
     notified: "уведомлён(а)",
     successDetail: "Ваш запрос отправлен команде.",
     callPerson: "Позвать {name}",
+    callWaiter: "Позвать официанта",
+    callHookah: "Позвать кальянщика",
+    anyAvailable: "Кто свободен",
+    genericHint: "Придёт первый свободный сотрудник",
     calling: "Вызов…"
   },
   staff: {

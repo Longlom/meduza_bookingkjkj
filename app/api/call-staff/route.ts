@@ -1,6 +1,6 @@
 import {
   findCallableMember,
-  getStaffOnShiftFromEnv,
+  getStaffOnShift,
   type StaffRole
 } from "@/lib/staff";
 import { parseLocale, translateError, getMessages } from "@/lib/i18n";
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
   }
 
   const { role, table, staffId } = parsed.data;
-  const staff = getStaffOnShiftFromEnv();
+  const staff = await getStaffOnShift();
   const member = findCallableMember(staff, role, staffId);
 
   if (!member) {
@@ -117,13 +117,17 @@ export async function POST(req: Request) {
   const requestId = globalThis.crypto.randomUUID().replaceAll("-", "").slice(0, 12);
   const tz = env?.BOOKING_TZ || DEFAULT_TZ;
   const timeLabel = formatNowInTz(tz);
+  const callMessages = getMessages(locale).call;
+  const staffLine = member.generic
+    ? `${staffRoleLabel(locale, role)} (${callMessages.anyAvailable})`
+    : member.name;
 
   const text = [
     "<b>Meduza staff call</b>",
     "",
     `<b>Table:</b> ${escapeHtml(table)}`,
     `<b>Role:</b> ${escapeHtml(staffRoleLabel("en", role))}`,
-    `<b>Staff:</b> ${escapeHtml(member.name)}`,
+    `<b>Staff:</b> ${escapeHtml(staffLine)}`,
     `<b>Time:</b> ${escapeHtml(timeLabel)} (Vietnam)`,
     `<b>ID:</b> ${requestId}`
   ].join("\n");

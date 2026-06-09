@@ -47,11 +47,15 @@ export const en: Messages = {
     noStaffTitle: "No staff on shift",
     noStaffDescription: "Please ask the hostess for assistance.",
     title: "Call staff",
-    subtitle: "Choose who to notify",
+    subtitle: "Call any available team member, or choose someone by name",
     table: "Table",
     notified: "notified",
     successDetail: "Your request was sent to the team.",
     callPerson: "Call {name}",
+    callWaiter: "Call waiter",
+    callHookah: "Call hookah master",
+    anyAvailable: "Any available",
+    genericHint: "First free team member will come",
     calling: "Calling…"
   },
   staff: {
