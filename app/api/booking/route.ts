@@ -8,9 +8,14 @@ import {
   getResolvedCalendarDate,
   isSlotBookable
 } from "@/lib/bookingSlots";
+import { parseLocale, translateError } from "@/lib/i18n";
 import { sendTelegramMessage } from "@/lib/telegram";
 
 type ErrorBody = { error: string; openingHours?: string };
+
+function err(locale: ReturnType<typeof parseLocale>, key: string, params?: Record<string, string | number>) {
+  return translateError(locale, key, params);
+}
 
 export async function POST(req: Request) {
   const cfg = getOpeningHoursFromEnv();
@@ -21,44 +26,46 @@ export async function POST(req: Request) {
   const botToken = env?.TELEGRAM_BOT_TOKEN;
   const chatId = env?.TELEGRAM_CHAT_ID;
 
-  if (!botToken || !chatId) {
-    return Response.json(
-      {
-        error:
-          "Server is not configured. Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID.",
-        openingHours: opening
-      } satisfies ErrorBody,
-      { status: 500 }
-    );
-  }
-
   let json: unknown;
   try {
     json = await req.json();
   } catch {
     return Response.json(
-      { error: "Invalid JSON body.", openingHours: opening } satisfies ErrorBody,
+      { error: err("en", "errors.invalidJson"), openingHours: opening } satisfies ErrorBody,
       { status: 400 }
     );
   }
 
   if (typeof json !== "object" || json === null) {
     return Response.json(
-      { error: "Invalid request body.", openingHours: opening } satisfies ErrorBody,
+      { error: err("en", "errors.invalidBody"), openingHours: opening } satisfies ErrorBody,
       { status: 400 }
     );
   }
 
   const body = json as Record<string, unknown>;
+  const locale = parseLocale(body.locale);
+  const tzLabel =
+    locale === "ru" ? "время Вьетнама" : "Vietnam time";
+
+  if (!botToken || !chatId) {
+    return Response.json(
+      {
+        error: err(locale, "errors.serverNotConfigured"),
+        openingHours: opening
+      } satisfies ErrorBody,
+      { status: 500 }
+    );
+  }
 
   const parsed = BookingSchema.safeParse({
     ...body,
     guests: typeof body.guests === "string" ? Number(body.guests) : body.guests
   });
   if (!parsed.success) {
-    const first = parsed.error.issues[0]?.message || "Invalid input.";
+    const first = parsed.error.issues[0]?.message || "errors.invalidInput";
     return Response.json(
-      { error: first, openingHours: opening } satisfies ErrorBody,
+      { error: err(locale, first), openingHours: opening } satisfies ErrorBody,
       { status: 400 }
     );
   }
@@ -68,7 +75,11 @@ export async function POST(req: Request) {
   if (!isTimeBookable(booking.time, cfg)) {
     return Response.json(
       {
-        error: `Bookings are available ${cfg.openFrom}–${cfg.lastBookable} (Vietnam time).`,
+        error: err(locale, "errors.bookingsAvailable", {
+          from: cfg.openFrom,
+          to: cfg.lastBookable,
+          tz: tzLabel
+        }),
         openingHours: opening
       } satisfies ErrorBody,
       { status: 400 }
@@ -78,17 +89,14 @@ export async function POST(req: Request) {
   if (!isSlotBookable(booking.date, booking.time, cfg)) {
     return Response.json(
       {
-        error:
-          "Please choose a time at least 1.5 hours from now (Vietnam time).",
+        error: err(locale, "errors.slotTooSoon", { tz: tzLabel }),
         openingHours: opening
       } satisfies ErrorBody,
       { status: 400 }
     );
   }
 
-  // Minimal request id, returned to the client and included in Telegram.
   const requestId = globalThis.crypto.randomUUID().replaceAll("-", "").slice(0, 12);
-
   const resolvedDate = getResolvedCalendarDate(booking.date, booking.time, cfg);
 
   const text = [
@@ -109,7 +117,7 @@ export async function POST(req: Request) {
   } catch (e: any) {
     return Response.json(
       {
-        error: e?.message || "Failed to send Telegram message.",
+        error: err(locale, "errors.telegramFailed"),
         openingHours: opening
       } satisfies ErrorBody,
       { status: 502 }
@@ -132,4 +140,3 @@ function escapeHtml(s: string) {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;");
 }
-

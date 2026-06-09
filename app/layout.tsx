@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import AppVideoShell from "@/components/AppVideoShell";
+import AppProviders from "@/components/AppProviders";
 
 export const metadata: Metadata = {
   title: "Meduza — Booking",
@@ -20,13 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <AppVideoShell>{children}</AppVideoShell>
+        <AppProviders>{children}</AppProviders>
         <Analytics />
         <SpeedInsights />
       </body>
     </html>
   );
 }
-

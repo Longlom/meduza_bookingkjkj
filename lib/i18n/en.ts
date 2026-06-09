@@ -1,0 +1,91 @@
+import type { Messages } from "./types";
+
+export const en: Messages = {
+  common: {
+    required: "Required",
+    optional: "Optional",
+    vietnamTime: "Vietnam time",
+    reference: "Reference"
+  },
+  lang: {
+    en: "EN",
+    ru: "RU",
+    switchLabel: "Language"
+  },
+  home: {
+    subtitle: "Restaurant-lounge booking",
+    description:
+      "Use the booking form to request a table. A hostess will confirm your booking in Telegram/phone.",
+    openBooking: "Open booking form"
+  },
+  booking: {
+    title: "Meduza — Booking",
+    openingHours: "Opening hours",
+    requestSent: "Request sent",
+    requestSentDetail:
+      "The hostess received your booking request in Telegram.",
+    name: "Name",
+    phone: "Phone",
+    date: "Date",
+    time: "Time",
+    timeHint: "From 1.5h ahead",
+    guests: "Guests",
+    specialRequests: "Special requests",
+    namePlaceholder: "Your name",
+    phonePlaceholder: "+84 ...",
+    notesPlaceholder: "Birthday, allergies, seating preference…",
+    noTimes: "No times",
+    noTimesLeft: "No times left for this date. Pick a later date.",
+    submit: "Book",
+    submitting: "Booking…",
+    timeAriaLabel: "Time"
+  },
+  call: {
+    scanQrTitle: "Scan the QR on your table",
+    scanQrDescription:
+      "Open the link from the QR code at your table to call the waiter or hookah master.",
+    noStaffTitle: "No staff on shift",
+    noStaffDescription: "Please ask the hostess for assistance.",
+    title: "Call staff",
+    subtitle: "Choose who to notify",
+    table: "Table",
+    notified: "notified",
+    successDetail: "Your request was sent to the team.",
+    callPerson: "Call {name}",
+    calling: "Calling…"
+  },
+  staff: {
+    waiters: "Waiters",
+    hookahMasters: "Hookah masters",
+    waiter: "Waiter",
+    hookahMaster: "Hookah master"
+  },
+  errors: {
+    bookingFailed: "Booking failed. Please try again.",
+    callFailed: "Call failed. Please try again.",
+    nameMin: "Please enter your name.",
+    phoneRequired: "Please enter a phone number.",
+    phoneInvalidChars: "Phone contains invalid characters.",
+    phoneNeedDigit: "Phone must contain at least one digit.",
+    dateInvalid: "Invalid date format (YYYY-MM-DD).",
+    timeInvalid: "Invalid time format (HH:MM).",
+    guestsMin: "Guests must be at least 1.",
+    guestsMax: "For large groups, please contact the hostess.",
+    notesTooLong: "Notes are too long.",
+    invalidInput: "Invalid input.",
+    staffRequired: "Staff is required.",
+    staffInvalid: "Invalid staff.",
+    tableRequired: "Table is required.",
+    tableInvalid: "Invalid table.",
+    serverNotConfigured:
+      "Server is not configured. Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID.",
+    invalidJson: "Invalid JSON body.",
+    invalidBody: "Invalid request body.",
+    bookingsAvailable:
+      "Bookings are available {from}–{to} ({tz}).",
+    slotTooSoon: "Please choose a time at least 1.5 hours from now ({tz}).",
+    telegramFailed: "Failed to send Telegram message.",
+    staffNotOnShift: "{role} is not on shift right now.",
+    rateLimited: "Please wait a moment before calling again."
+  }
+};

@@ -1,0 +1,1 @@
+{"nodes": [], "edges": [{"source": "app_page_homepage", "target": "booking_page_bookingpage", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "app/page.tsx", "source_location": "L21", "weight": 1.0}], "hyperedges": []}

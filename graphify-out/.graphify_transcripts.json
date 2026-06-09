@@ -1,0 +1,3 @@
+  warning: could not transcribe /home/longlom/Desktop/meduza/table_book/meduza-booking/app/assets/font.mp4: Video transcription requires faster-whisper. Run: pip install 'graphifyy[video]'
+  warning: could not transcribe /home/longlom/Desktop/meduza/table_book/meduza-booking/public/font.mp4: Video transcription requires faster-whisper. Run: pip install 'graphifyy[video]'
+[]

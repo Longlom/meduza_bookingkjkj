@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   filterBookableSlots,
   toISODateInTz
@@ -34,6 +35,7 @@ function TimeDropdown(props: {
   value: string;
   disabled: boolean;
   options: string[];
+  ariaLabel: string;
   onChange: (v: string) => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -62,7 +64,7 @@ function TimeDropdown(props: {
         {props.value}
       </button>
       {open && props.options.length > 0 ? (
-        <div className="dropdownMenu" role="listbox" aria-label="Time">
+        <div className="dropdownMenu" role="listbox" aria-label={props.ariaLabel}>
           {props.options.map((t) => (
             <button
               type="button"
@@ -84,6 +86,7 @@ function TimeDropdown(props: {
 }
 
 export default function BookingForm({ openingHours }: BookingFormProps) {
+  const { locale, messages: m, messages: { common: c, booking: b } } = useLanguage();
   const hoursLabel = openingHoursHint(openingHours);
   const [nowTick, setNowTick] = useState(0);
 
@@ -143,7 +146,7 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
       const res = await fetch("/api/booking", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ ...payload, locale })
       });
       const data = (await res.json().catch(() => ({}))) as any;
       if (!res.ok) {
@@ -152,14 +155,14 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
             ? data.openingHours
             : openingHint
         );
-        throw new Error(data?.error || "Booking failed. Please try again.");
+        throw new Error(data?.error || m.errors.bookingFailed);
       }
       setOpeningHint(
         typeof data?.openingHours === "string" ? data.openingHours : openingHint
       );
       setSuccess({ requestId: String(data.requestId || "") });
     } catch (err: any) {
-      setError(err?.message || "Booking failed. Please try again.");
+      setError(err?.message || m.errors.bookingFailed);
     } finally {
       setSubmitting(false);
     }
@@ -174,9 +177,9 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
       <div className="card">
         <div className="header">
           <div>
-            <div className="title">Meduza — Booking</div>
+            <div className="title">{b.title}</div>
             <div className="subtitle">
-              Opening hours: {hoursLabel} (Vietnam time)
+              {b.openingHours}: {hoursLabel} ({c.vietnamTime})
             </div>
           </div>
           <div className="subtitle">{openingHint}</div>
@@ -185,10 +188,10 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
         {success ? (
           <div className="success">
             <div className="title" style={{ fontSize: 16 }}>
-              Request sent
+              {b.requestSent}
             </div>
             <div className="subtitle">
-              The hostess received your booking request in Telegram. Reference:{" "}
+              {b.requestSentDetail} {c.reference}:{" "}
               <b>{success.requestId || "—"}</b>
             </div>
           </div>
@@ -198,8 +201,8 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
           <div className="grid two">
             <div className="field">
               <div className="labelRow">
-                <div className="label">Name</div>
-                <div className="hint">Required</div>
+                <div className="label">{b.name}</div>
+                <div className="hint">{c.required}</div>
               </div>
               <input
                 className="input"
@@ -208,7 +211,7 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
                 onChange={(e) =>
                   setPayload((p) => ({ ...p, name: e.target.value }))
                 }
-                placeholder="Your name"
+                placeholder={b.namePlaceholder}
                 autoComplete="name"
                 required
               />
@@ -216,8 +219,8 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
 
             <div className="field">
               <div className="labelRow">
-                <div className="label">Phone</div>
-                <div className="hint">Required</div>
+                <div className="label">{b.phone}</div>
+                <div className="hint">{c.required}</div>
               </div>
               <input
                 className="input"
@@ -256,7 +259,7 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
                     phone: sanitizePhone(e.target.value)
                   }))
                 }
-                placeholder="+84 ..."
+                placeholder={b.phonePlaceholder}
                 autoComplete="tel"
                 required
               />
@@ -266,8 +269,8 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
           <div className="grid two">
             <div className="field">
               <div className="labelRow">
-                <div className="label">Date</div>
-                <div className="hint">Required</div>
+                <div className="label">{b.date}</div>
+                <div className="hint">{c.required}</div>
               </div>
               <input
                 type="date"
@@ -286,19 +289,20 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
 
             <div className="field">
               <div className="labelRow">
-                <div className="label">Time</div>
-                <div className="hint">From 1.5h ahead · {hoursLabel}</div>
+                <div className="label">{b.time}</div>
+                <div className="hint">
+                  {b.timeHint} · {hoursLabel}
+                </div>
               </div>
               <TimeDropdown
-                value={noTimesAvailable ? "No times" : payload.time}
+                value={noTimesAvailable ? b.noTimes : payload.time}
                 disabled={disabled || noTimesAvailable}
                 options={availableTimes}
+                ariaLabel={b.timeAriaLabel}
                 onChange={(time) => setPayload((p) => ({ ...p, time }))}
               />
               {noTimesAvailable ? (
-                <div className="hint">
-                  No times left for this date. Pick a later date.
-                </div>
+                <div className="hint">{b.noTimesLeft}</div>
               ) : null}
             </div>
           </div>
@@ -306,8 +310,8 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
           <div className="grid two">
             <div className="field">
               <div className="labelRow">
-                <div className="label">Guests</div>
-                <div className="hint">Required</div>
+                <div className="label">{b.guests}</div>
+                <div className="hint">{c.required}</div>
               </div>
               <input
                 type="number"
@@ -345,8 +349,8 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
 
             <div className="field">
               <div className="labelRow">
-                <div className="label">Special requests</div>
-                <div className="hint">Optional</div>
+                <div className="label">{b.specialRequests}</div>
+                <div className="hint">{c.optional}</div>
               </div>
               <textarea
                 className="textarea"
@@ -355,7 +359,7 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
                 onChange={(e) =>
                   setPayload((p) => ({ ...p, notes: e.target.value }))
                 }
-                placeholder="Birthday, allergies, seating preference…"
+                placeholder={b.notesPlaceholder}
               />
             </div>
           </div>
@@ -368,7 +372,7 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
               disabled={disabled || noTimesAvailable}
               type="submit"
             >
-              {submitting ? "Booking…" : "Book"}
+              {submitting ? b.submitting : b.submit}
             </button>
           </div>
         </form>

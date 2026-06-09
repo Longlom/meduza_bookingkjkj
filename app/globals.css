@@ -287,3 +287,118 @@ select {
   border: 1px solid rgba(63, 255, 155, 0.2);
 }
 
+.tableBadge {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f8faff;
+  white-space: nowrap;
+}
+
+.staffSection + .staffSection {
+  margin-top: 20px;
+}
+
+.staffSectionTitle {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(248, 250, 255, 0.88);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.staffGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 560px) {
+  .staffGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .staffGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.staffCard {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  text-align: center;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.staffPhoto {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.staffRole {
+  font-size: 12px;
+  color: rgba(248, 250, 255, 0.72);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.staffName {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.staffCallButton {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.langSwitch {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(12, 16, 24, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+}
+
+.langSwitch__btn {
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(248, 250, 255, 0.75);
+  background: transparent;
+}
+
+.langSwitch__btn:hover {
+  color: #f8faff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.langSwitch__btn--active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #2a6bff, #7b2cff);
+}
+
