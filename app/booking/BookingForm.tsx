@@ -17,6 +17,7 @@ import { PHONE_ALLOWED } from "@/lib/validation";
 type BookingPayload = {
   name: string;
   phone: string;
+  instagram?: string;
   date: string;
   time: string;
   guests: number;
@@ -29,6 +30,10 @@ type BookingFormProps = {
 
 function sanitizePhone(value: string) {
   return value.replaceAll(/[^0-9+()\-.\s#xX]/g, "");
+}
+
+function sanitizeInstagram(value: string) {
+  return value.replaceAll(/[^@a-zA-Z0-9._]/g, "");
 }
 
 function TimeDropdown(props: {
@@ -103,6 +108,7 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
   const [payload, setPayload] = useState<BookingPayload>({
     name: "",
     phone: "",
+    instagram: "",
     date: toISODateInTz(Date.now(), DEFAULT_TZ),
     time: openingHours.openFrom,
     guests: 2,
@@ -264,6 +270,26 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
                 required
               />
             </div>
+          </div>
+
+          <div className="field">
+            <div className="labelRow">
+              <div className="label">{b.instagram}</div>
+              <div className="hint">{c.preferredContact}</div>
+            </div>
+            <input
+              className="input"
+              value={payload.instagram || ""}
+              disabled={disabled}
+              onChange={(e) =>
+                setPayload((p) => ({
+                  ...p,
+                  instagram: sanitizeInstagram(e.target.value)
+                }))
+              }
+              placeholder={b.instagramPlaceholder}
+              autoComplete="username"
+            />
           </div>
 
           <div className="grid two">

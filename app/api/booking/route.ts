@@ -105,6 +105,9 @@ export async function POST(req: Request) {
     `<b>ID:</b> ${requestId}`,
     `<b>Name:</b> ${escapeHtml(booking.name)}`,
     `<b>Phone:</b> ${escapeHtml(booking.phone)}`,
+    booking.instagram
+      ? `<b>Instagram:</b> @${escapeHtml(booking.instagram)}`
+      : "<b>Instagram:</b> —",
     `<b>Date:</b> ${escapeHtml(resolvedDate)}`,
     `<b>Time:</b> ${escapeHtml(booking.time)} (Vietnam)`,
     `<b>Guests:</b> ${booking.guests}`,

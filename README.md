@@ -45,6 +45,8 @@ Or `STAFF_SHEET_ID` + optional `STAFF_SHEET_GID`.
 
 Changes appear on the call page within ~1 minute (cached).
 
+**Hostess guide (RU):** step-by-step instructions for QR codes, staff photos, and the shift sheet → [`docs/HOSTESS_GUIDE.md`](docs/HOSTESS_GUIDE.md)
+
 **Default call buttons:** Each role always shows an **“Any available”** card first — guests can call without picking a name; any free waiter or hookah master can respond. Named rows in the sheet (with `enabled=TRUE`) appear as additional cards below.
 
 ### Hostess daily routine

@@ -4,6 +4,7 @@ export type Messages = {
   common: {
     required: string;
     optional: string;
+    preferredContact: string;
     vietnamTime: string;
     reference: string;
   };
@@ -24,6 +25,7 @@ export type Messages = {
     requestSentDetail: string;
     name: string;
     phone: string;
+    instagram: string;
     date: string;
     time: string;
     timeHint: string;
@@ -31,6 +33,7 @@ export type Messages = {
     specialRequests: string;
     namePlaceholder: string;
     phonePlaceholder: string;
+    instagramPlaceholder: string;
     notesPlaceholder: string;
     noTimes: string;
     noTimesLeft: string;
@@ -73,6 +76,8 @@ export type Messages = {
     guestsMin: string;
     guestsMax: string;
     notesTooLong: string;
+    instagramTooLong: string;
+    instagramInvalid: string;
     invalidInput: string;
     staffRequired: string;
     staffInvalid: string;

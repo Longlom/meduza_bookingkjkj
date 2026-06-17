@@ -4,6 +4,7 @@ export const ru: Messages = {
   common: {
     required: "Обязательно",
     optional: "Необязательно",
+    preferredContact: "Необязательно · предпочтительный способ связи",
     vietnamTime: "Время Вьетнама",
     reference: "Номер"
   },
@@ -26,6 +27,7 @@ export const ru: Messages = {
       "Администратор получил вашу заявку на бронирование в Telegram.",
     name: "Имя",
     phone: "Телефон",
+    instagram: "Instagram",
     date: "Дата",
     time: "Время",
     timeHint: "Не ранее чем через 1,5 ч",
@@ -33,6 +35,7 @@ export const ru: Messages = {
     specialRequests: "Особые пожелания",
     namePlaceholder: "Ваше имя",
     phonePlaceholder: "+84 ...",
+    instagramPlaceholder: "@username",
     notesPlaceholder: "День рождения, аллергии, предпочтения по столу…",
     noTimes: "Нет времени",
     noTimesLeft: "На эту дату нет свободного времени. Выберите другую дату.",
@@ -76,6 +79,8 @@ export const ru: Messages = {
     guestsMin: "Минимум 1 гость.",
     guestsMax: "Для больших групп свяжитесь с администратором.",
     notesTooLong: "Слишком длинный комментарий.",
+    instagramTooLong: "Слишком длинный ник в Instagram.",
+    instagramInvalid: "Ник в Instagram содержит недопустимые символы.",
     invalidInput: "Неверные данные.",
     staffRequired: "Укажите сотрудника.",
     staffInvalid: "Неверный сотрудник.",

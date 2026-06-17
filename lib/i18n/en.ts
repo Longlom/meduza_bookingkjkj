@@ -4,6 +4,7 @@ export const en: Messages = {
   common: {
     required: "Required",
     optional: "Optional",
+    preferredContact: "Optional · preferred contact",
     vietnamTime: "Vietnam time",
     reference: "Reference"
   },
@@ -26,6 +27,7 @@ export const en: Messages = {
       "The hostess received your booking request in Telegram.",
     name: "Name",
     phone: "Phone",
+    instagram: "Instagram",
     date: "Date",
     time: "Time",
     timeHint: "From 1.5h ahead",
@@ -33,6 +35,7 @@ export const en: Messages = {
     specialRequests: "Special requests",
     namePlaceholder: "Your name",
     phonePlaceholder: "+84 ...",
+    instagramPlaceholder: "@username",
     notesPlaceholder: "Birthday, allergies, seating preference…",
     noTimes: "No times",
     noTimesLeft: "No times left for this date. Pick a later date.",
@@ -76,6 +79,8 @@ export const en: Messages = {
     guestsMin: "Guests must be at least 1.",
     guestsMax: "For large groups, please contact the hostess.",
     notesTooLong: "Notes are too long.",
+    instagramTooLong: "Instagram username is too long.",
+    instagramInvalid: "Instagram username contains invalid characters.",
     invalidInput: "Invalid input.",
     staffRequired: "Staff is required.",
     staffInvalid: "Invalid staff.",

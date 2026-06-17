@@ -3,6 +3,9 @@ import { z } from "zod";
 /** Digits and common phone symbols; no length limit. */
 export const PHONE_ALLOWED = /^[0-9+()\-.\s#xX]*$/;
 
+/** Instagram handle without leading @. */
+export const INSTAGRAM_ALLOWED = /^[a-zA-Z0-9._]*$/;
+
 export const BookingSchema = z.object({
   name: z.string().trim().min(2, "errors.nameMin"),
   phone: z
@@ -18,7 +21,18 @@ export const BookingSchema = z.object({
     .int()
     .min(1, "errors.guestsMin")
     .max(50, "errors.guestsMax"),
-  notes: z.string().trim().max(800, "errors.notesTooLong").optional().default("")
+  notes: z.string().trim().max(800, "errors.notesTooLong").optional().default(""),
+  instagram: z
+    .string()
+    .trim()
+    .max(30, "errors.instagramTooLong")
+    .optional()
+    .default("")
+    .refine(
+      (v) => !v || INSTAGRAM_ALLOWED.test(v.replace(/^@/, "")),
+      "errors.instagramInvalid"
+    )
+    .transform((v) => v.replace(/^@/, ""))
 });
 
 export type BookingInput = z.infer<typeof BookingSchema>;
