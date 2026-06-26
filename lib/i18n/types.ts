@@ -40,6 +40,10 @@ export type Messages = {
     submit: string;
     submitting: string;
     timeAriaLabel: string;
+    partnerOfferTitle: string;
+    partnerOfferText: string;
+    partnerPromoLabel: string;
+    partnerOfferCta: string;
   };
   call: {
     scanQrTitle: string;

@@ -12,6 +12,7 @@ import {
   type OpeningHoursConfig
 } from "@/lib/openingHours";
 import { DEFAULT_TZ } from "@/lib/time";
+import { formatMessage } from "@/lib/i18n";
 import { PHONE_ALLOWED } from "@/lib/validation";
 
 type BookingPayload = {
@@ -27,6 +28,9 @@ type BookingPayload = {
 type BookingFormProps = {
   openingHours: OpeningHoursConfig;
 };
+
+const PARTNER_URL = "https://nt-insider.org/";
+const PARTNER_PROMO_CODE = "MEDUZA";
 
 function sanitizePhone(value: string) {
   return value.replaceAll(/[^0-9+()\-.\s#xX]/g, "");
@@ -192,15 +196,38 @@ export default function BookingForm({ openingHours }: BookingFormProps) {
         </div>
 
         {success ? (
-          <div className="success">
-            <div className="title" style={{ fontSize: 16 }}>
-              {b.requestSent}
+          <>
+            <div className="success">
+              <div className="title" style={{ fontSize: 16 }}>
+                {b.requestSent}
+              </div>
+              <div className="subtitle">
+                {b.requestSentDetail} {c.reference}:{" "}
+                <b>{success.requestId || "—"}</b>
+              </div>
             </div>
-            <div className="subtitle">
-              {b.requestSentDetail} {c.reference}:{" "}
-              <b>{success.requestId || "—"}</b>
+
+            <div className="partnerOffer">
+              <div className="partnerOfferTitle">{b.partnerOfferTitle}</div>
+              <p className="partnerOfferText">
+                {formatMessage(b.partnerOfferText, { code: PARTNER_PROMO_CODE })}
+              </p>
+              <div className="partnerOfferCode">
+                <span className="partnerOfferCodeLabel">{b.partnerPromoLabel}</span>
+                <span className="partnerOfferCodeValue">{PARTNER_PROMO_CODE}</span>
+              </div>
+              <div className="actions" style={{ marginTop: 0 }}>
+                <a
+                  className="button"
+                  href={PARTNER_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {b.partnerOfferCta}
+                </a>
+              </div>
             </div>
-          </div>
+          </>
         ) : null}
 
         <form onSubmit={onSubmit} className="grid" style={{ marginTop: 16 }}>

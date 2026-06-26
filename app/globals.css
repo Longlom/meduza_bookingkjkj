@@ -287,6 +287,50 @@ select {
   border: 1px solid rgba(63, 255, 155, 0.2);
 }
 
+.partnerOffer {
+  margin-top: 14px;
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: rgba(123, 44, 255, 0.08);
+  border: 1px solid rgba(123, 44, 255, 0.22);
+}
+
+.partnerOfferTitle {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.partnerOfferText {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(248, 250, 255, 0.88);
+}
+
+.partnerOfferCode {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.partnerOfferCodeLabel {
+  font-size: 12px;
+  color: rgba(248, 250, 255, 0.65);
+}
+
+.partnerOfferCodeValue {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+}
+
 .tableBadge {
   font-size: 13px;
   font-weight: 700;

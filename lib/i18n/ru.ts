@@ -41,7 +41,12 @@ export const ru: Messages = {
     noTimesLeft: "На эту дату нет свободного времени. Выберите другую дату.",
     submit: "Забронировать",
     submitting: "Бронирование…",
-    timeAriaLabel: "Время"
+    timeAriaLabel: "Время",
+    partnerOfferTitle: "Эксклюзивное предложение партнёра",
+    partnerOfferText:
+      "Мы хотим предложить вам эксклюзивную скидку на услуги fast track в аэропорту Камрани от нашего партнёра NT Insider. Укажите промокод {code} при бронировании, чтобы получить скидку.",
+    partnerPromoLabel: "Промокод",
+    partnerOfferCta: "Забронировать Fast Track на NT Insider"
   },
   call: {
     scanQrTitle: "Отсканируйте QR-код на столе",

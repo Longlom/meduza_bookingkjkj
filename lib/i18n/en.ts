@@ -41,7 +41,12 @@ export const en: Messages = {
     noTimesLeft: "No times left for this date. Pick a later date.",
     submit: "Book",
     submitting: "Booking…",
-    timeAriaLabel: "Time"
+    timeAriaLabel: "Time",
+    partnerOfferTitle: "Exclusive partner offer",
+    partnerOfferText:
+      "We'd like to offer you an exclusive discount on fast track services at Cam Ranh International Airport from our partner NT Insider. Use promo code {code} when booking to receive your discount.",
+    partnerPromoLabel: "Promo code",
+    partnerOfferCta: "Book Fast Track at NT Insider"
   },
   call: {
     scanQrTitle: "Scan the QR on your table",
